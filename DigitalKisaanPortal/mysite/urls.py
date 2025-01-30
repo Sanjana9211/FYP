@@ -5,6 +5,8 @@ urlpatterns = [
     path('', views.index,name='home'),
     path('about', views.about,name='about'),
     path('prediction', views.prediction,name='prediction'),
+    path('yprediction', views.yprediction,name='yprediction'),
+
     path('schemes', views.schemes,name='schemes'),
     #path('latestnews', views.latestnews,name='latestnews'),
     path('latestnews', views.latestnews,name='latestnews'),

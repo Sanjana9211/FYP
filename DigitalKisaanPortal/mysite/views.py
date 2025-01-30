@@ -85,6 +85,9 @@ def about(request):
 def prediction(request):
     return render(request,'mysite/predict.html')
 
+def yprediction(request):
+    return render(request,'mysite/ypredict.html')
+
 def schemes(request):
     return render(request,'mysite/schemes.html')
 

@@ -109,8 +109,8 @@ if (_isNS('google.translate.Element')){return}(function(){var c=_setupNS('google
 								<li class="dropdown">
 									<a href="#" class="dropbtn">Recommendation ▼</a>
 									<ul class="dropdown-content">
-										<li><a href="#">Crop recomendation</a></li>
-										<li><a href="#">Fertilizer recomendation</a></li>
+										<li><a href="{% url 'prediction' %}">Crop recomendation</a></li>
+										<li><a href="{% url 'prediction' %}">Fertilizer recomendation</a></li>
 									</ul>
 								</li>
 								<style>
@@ -156,8 +156,8 @@ if (_isNS('google.translate.Element')){return}(function(){var c=_setupNS('google
 																<li class="dropdown">
 																	<a href="#" class="dropbtn">Prediction ▼</a>
 																	<ul class="dropdown-content">
-																		<li><a href="#">Yield prediction</a></li>
-																		<li><a href="#">Rainfall prediction</a></li>
+																		<li><a href="{% url 'yprediction' %}">Yield prediction</a></li>
+																		<li><a href="{% url 'prediction' %}">Rainfall prediction</a></li>
 																	</ul>
 																</li>
 																<style>
