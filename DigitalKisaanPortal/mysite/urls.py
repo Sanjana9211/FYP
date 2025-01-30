@@ -14,6 +14,8 @@ urlpatterns = [
     path('livefeedpage', views.livefeedpage,name='livefeedpage'),
     path('community', views.community,name='community'),
     path('contact', views.contact,name='contact'),
-    path('calculate/', views.index1, name="calculate"),
+    path('calculate', views.index1, name="calculate"),
+    path('yieldcalc', views.yieldcalc, name="yieldcalc"),
+
 ]
 
