@@ -7,16 +7,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <meta name="keywords" content="Bootstrap Responsive Templates, Iphone Compatible Templates, Smartphone Compatible Templates, Ipad Compatible Templates, Flat Responsive Templates"/>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <script src="{% static 'mysite/js/jquery-1.11.0.min.js' %}"></script>
     <link href="{% static 'mysite/css/bootstrap.css' %}" rel='stylesheet' type='text/css' />
     <link href="{% static 'mysite/css/style.css' %}" rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Arimo:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-
 </head>
 <body>
 	<!--start-header-->
-
 
     <div id="google_translate_element"></div>
 	<script type="text/javascript">
@@ -38,6 +36,7 @@ function _loadCss(a){var b=document.createElement("link");b.type="text/css";b.re
 window.addEventListener&&"undefined"==typeof document.readyState&&window.addEventListener("DOMContentLoaded",function(){document.readyState="complete"},!1);
 if (_isNS('google.translate.Element')){return}(function(){var c=_setupNS('google.translate._const');c._cest = gtConstEvalStartTime;gtConstEvalStartTime = undefined;c._cl='en';c._cuc='googleTranslateElementInit';c._cac='';c._cam='';c._ctkk='448961.2418888573';var h='translate.googleapis.com';var s=(true?'https':window.location.protocol=='https:'?'https':'http')+'://';var b=s+h;c._pah=h;c._pas=s;c._pbi=b+'/translate_static/img/te_bk.gif';c._pci=b+'/translate_static/img/te_ctrl3.gif';c._pli=b+'/translate_static/img/loading.gif';c._plla=h+'/translate_a/l';c._pmi=b+'/translate_static/img/mini_google.png';c._ps=b+'/translate_static/css/translateelement.css';c._puh='translate.google.com';_loadCss(c._ps);_loadJs(b+'/translate_static/js/element/main.js');})();})();
 </script>
+
 
 
 			<div id="home" class="header">
@@ -221,7 +220,7 @@ if (_isNS('google.translate.Element')){return}(function(){var c=_setupNS('google
 																</script>
 								<li><a href="{% url 'schemes' %}">Schemes</a></li>
 								<li><a href="{% url 'latestnews' %}">Latest News</a></li>
-
+								
 								<li><a href="{% url 'livefeedpage' %}">Live Feed Page</a></li>
 								<li><a href="{% url 'community' %}">Community</a></li>
 								<li><a href="{% url 'contact' %}">Contact</a></li>
@@ -244,37 +243,130 @@ if (_isNS('google.translate.Element')){return}(function(){var c=_setupNS('google
 							<!----//End-top-nav-script---->
 					</div>
 					<div class="clearfix"> </div>
-    </div>
-    </div>
+		</div>
+		</div>
+		<br><br><br>
+		<div class="predict">
+			<h2 style="text-align: center;"><b>YIELD PREDICTION (KARNATAKA)</b></h2>
+	    	<div class="data">
 
-    <div class="jumbotron" style="color:black;height: 20px " >
-      <h2 style ="color:black" align="center">
+		        <form id='formm' method="post" class="main-form">
+                <div class="container">
+                {% csrf_token %}
+					<div class="contact-text">
+			        	<h3><b>Prediction Data:</b></h3>
 
-          <b>Get The Latest News On Our Website</b>
-      </h2>
-    </div> 
-  
-  
-<div class="container">
-      {% for new, des, i in mylist %}
+		                <div class="contact-text">
 
-          <h3><b>News: </b>{{ new }} {{ value|linebreaks }}</h3>
+							<input type="text" name="state" id="fstate" value="State Name" 
+								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'State Name';}" required/>
+						
 
-          <h4><b>Description: </b>{{ des }} {{ value|linebreaks }}</h4>
-          <div align="center" class="container"><img src="{{ i }}" alt=""  width="600px" height="350px"></div>
-          <br><br><br><br>
+							<input type="text" name="district" id="fdistrict" value="District Name" 
+								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'District Name';}" required/>
+						
+							<input type="text" name="season" id="fseason" value="Season" 
+								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Season';}" required/>
+						
+							<input type="text" name="crop" id="fcrop" value="Crop Name" 
+								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Crop Name';}" required/>
+						
+							<input type="text" name="area" id="farea" value="Area (in hectares)" 
+								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Area (in hectares)';}" required/>
+						</div>
+						
+		            </div>
+					<div class="contact-but">
+						<input type="submit" id="submitt" value="Submit data" class="btn">
+					</div>
 
-      {% endfor %} 
-    </div> 
+		            <div submit-success>
+		                <template type="amp-mustache">
+		                    <p class="form-submit-response">
+		                        Data submitted!
+		                    </p>
+		                </template>
+		            </div>
+		            <div submit-error>
+		                <template type="amp-mustache">
+		                    <p class="form-submit-response">
+		                        Oops! Sorry, there was an error.
+		                    </p>
+		                </template>
+		            </div>
+                    </div>
+		        </form>
 
+		    </div><br>
+		    <div class="container">
+		    	<h3><b>Prediction Results:</b></h3>
+		    	<div class="contact-textarea">
+					<textarea value="result" id="resultt" style="height:20px ;width: 400px; font-size: 2em;" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Recommendation Output';}"></textarea>
+				</div>
+		    </div>
+            
 
-    <div class="footer">
+		</div>
+		<br>
+		<div class="footer">
              <div class="container">
                 <div class="footer-text">
-          <p>DIGITAL KISAAN PORTAL</p>
-        </div>
+					<p>DIGITAL KISAAN PORTAL</p>
+				</div>
              </div>
-    <a href="#home" id="toTop" class="scroll" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+		<a href="#home" id="toTop" class="scroll" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
      </div>
+
+<script>
+
+    const form = document.getElementById('formm');
+    form.addEventListener("submit", submitHandler);
+    function submitHandler(e) {
+        console.log("executed")
+        var list1=[document.getElementById('fstate').value,document.getElementById('fdistrict').value,document.getElementById('fseason').value,document.getElementById('fcrop').value,document.getElementById('farea').value]
+        e.preventDefault();
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: '{% url "yieldcalc" %}', // the url where we want to POST
+            'data': {
+                'content': JSON.stringify(list1),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            dataType: 'json', // what type of data do we expect back from the server
+
+            success: (message) => {
+                console.log(message);
+                document.getElementById('resultt').value=JSON.stringify(message.content)
+                {#document.getElementById('textview').value += "The distance is : " + JSON.stringify(message.cost) + " km";#}
+                {#document.getElementById('textview').value += "\nAverage Fuel cost : Rs. " + JSON.stringify(message.cost2);#}
+                {#document.getElementById('textview').value += "\nThe path is : \n" + JSON.stringify(message.path);#}
+                {#const obj = JSON.stringify(message.final);#}
+                {#list2 = JSON.parse(obj);#}
+            }
+
+
+        });
+    }
+</script>
+
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

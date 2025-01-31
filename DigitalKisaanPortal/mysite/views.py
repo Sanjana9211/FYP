@@ -13,6 +13,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 
+import numpy as np
+import pandas as pd
+import joblib
+from django.shortcuts import render
+from django.http import JsonResponse
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.metrics import r2_score
+
 
 def recommend_helper():
 
@@ -70,12 +80,8 @@ def getCityInfo(city_name):
 
 
 
-#print(recommend(17.0000001, 36.000000, 196.00000, 23.871923, 90.499390, 5.882156, 10))
 
-#def index(request):
-    #return HttpResponse(recommend(17.0000001, 36.000000, 196.00000, 23.871923, 90.499390, 5.882156, 10))
 def index(request):
-    #print(recommend(17.0000001, 36.000000, 196.00000, 23.871923, 90.499390, 5.882156, 10))
     return render(request,'mysite/index.html')
 
 
@@ -85,11 +91,12 @@ def about(request):
 def prediction(request):
     return render(request,'mysite/predict.html')
 
+def yprediction(request):
+    return render(request,'mysite/ypredict.html')
+
 def schemes(request):
     return render(request,'mysite/schemes.html')
 
-#def latestnews(request):
-#    return render(request,'mysite/news.html')
 
 def livefeedpage(request):
     return render(request,'mysite/404.html')
@@ -111,8 +118,87 @@ def index1(request):
         except:
             crop1="Invalid Input"
             print("Invalid Input")
-        #print(type(dataa))
-        #return HttpResponse(dataa)
+        return JsonResponse({'message': 'success', 'username': "username", 'content': crop1})
+    
+
+
+def yield_train_model():
+
+    df = pd.read_csv("https://raw.githubusercontent.com/Sanjana9211/Datasets/refs/heads/main/crop_production_karnataka.csv")
+
+    
+    # Drop the Crop_Year column
+    df = df.drop(['Crop_Year'], axis=1)
+    
+    # Separate the features and target variable
+    X = df.drop(['Production'], axis=1)
+    y = df['Production']
+    
+    # Split the data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    # Categorical columns for one-hot encoding
+    categorical_cols = ['State_Name', 'District_Name', 'Season', 'Crop']
+    
+    # One-hot encode the categorical columns
+    ohe = OneHotEncoder(handle_unknown='ignore')
+    ohe.fit(X_train[categorical_cols])
+    
+    # Convert categorical columns to one-hot encoding
+    X_train_categorical = ohe.transform(X_train[categorical_cols])
+    X_test_categorical = ohe.transform(X_test[categorical_cols])
+    
+    # Combine the one-hot encoded categorical columns and numerical columns
+    X_train_final = np.hstack((X_train_categorical.toarray(), X_train.drop(categorical_cols, axis=1)))
+    X_test_final = np.hstack((X_test_categorical.toarray(), X_test.drop(categorical_cols, axis=1)))
+    
+    # Train the model
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model.fit(X_train_final, y_train)
+    
+    return model,ohe
+
+    
+def ypredict(state,district,season,crop,area):
+    
+    model,ohe=yield_train_model()
+    
+    
+    # Prepare input for prediction
+    user_input = pd.DataFrame({
+        'State_Name': [state],
+        'District_Name': [district],
+        'Season': [season],
+        'Crop': [crop],
+        'Area': [area]
+    })
+    
+    # Categorical columns for encoding
+    categorical_cols = ['State_Name', 'District_Name', 'Season', 'Crop']
+    
+    # One-hot encode the categorical columns
+    user_input_categorical = ohe.transform(user_input[categorical_cols])
+    
+    # Combine the one-hot encoded categorical columns and numerical columns
+    user_input_final = np.hstack((user_input_categorical.toarray(), user_input[['Area']].values))
+    
+    # Make the prediction
+    prediction = model.predict(user_input_final)
+    
+    return prediction[0]
+
+
+def yieldcalc(request):
+    if request.method == 'POST':
+        try:
+            dataa = json.loads(request.POST['content'] )
+            print(dataa)
+
+            crop1=ypredict(dataa[0],dataa[1],dataa[2], dataa[3],dataa[4])
+            print(crop1)
+        except Exception as e:
+            crop1 = "Invalid Input"
+            print("Error:", str(e))  
         return JsonResponse({'message': 'success', 'username': "username", 'content': crop1})
 
 
@@ -138,3 +224,5 @@ def latestnews(request):
     mylist = zip(news, desc, img)
 
     return render(request, 'mysite/news.html', context={"mylist": mylist})
+
+
