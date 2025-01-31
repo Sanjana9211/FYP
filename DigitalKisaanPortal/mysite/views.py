@@ -94,6 +94,9 @@ def prediction(request):
 def yprediction(request):
     return render(request,'mysite/ypredict.html')
 
+def frecommend(request):
+    return render(request,'mysite/frecommend.html')
+
 def schemes(request):
     return render(request,'mysite/schemes.html')
 
@@ -226,3 +229,75 @@ def latestnews(request):
     return render(request, 'mysite/news.html', context={"mylist": mylist})
 
 
+
+def fert_model():
+    from sklearn.tree import DecisionTreeClassifier
+
+    global dtc, le_soil, le_crop
+    
+    # Loading the dataset
+    try:
+        data = pd.read_csv("https://raw.githubusercontent.com/Sanjana9211/Datasets/refs/heads/main/fertilizer_recommendation.csv")
+        
+        # Label encoding for categorical features
+        le_soil = LabelEncoder()
+        data['Soil Type'] = le_soil.fit_transform(data['Soil Type'])
+        le_crop = LabelEncoder()
+        data['Crop Type'] = le_crop.fit_transform(data['Crop Type'])
+
+        soil_types = le_soil.classes_  # Get original soil type names
+        crop_types = le_crop.classes_ 
+        
+        # Splitting the data into input (X) and output (y) variables
+        X = data.iloc[:, :8]
+        y = data.iloc[:, -1]
+
+        # Splitting the dataset into training and testing sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+        # Training the Decision Tree Classifier model
+        dtc = DecisionTreeClassifier(random_state=0)
+        dtc.fit(X_train, y_train)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+
+
+
+def fertrec(request):
+        if request.method == "POST":
+            try:
+                # Get user inputs from request
+                fert_model()
+                dataa = json.loads(request.POST['content'] )
+                print(dataa)
+                nitrogen = dataa[0]
+                phosphorus = dataa[1]
+                potassium = dataa[2]
+                temperature = dataa[3]
+                humidity = dataa[4]
+                soil_moisture = dataa[5]
+                soil_type = dataa[6]
+                crop_type = dataa[7]
+                # Encode categorical values
+                soil_encoded = le_soil.transform([soil_type])[0]
+                crop_encoded = le_crop.transform([crop_type])[0]
+
+                # Prepare input for model prediction
+                user_input = np.array([[temperature, humidity, soil_moisture, soil_encoded, crop_encoded, nitrogen, potassium, phosphorus]])
+
+                # Predict the fertilizer recommendation
+                prediction = dtc.predict(user_input)[0]
+
+                # Return JSON response with prediction
+                return JsonResponse({'message': 'success', 'username': "username", 'content': prediction})
+
+            except Exception as e:
+                return JsonResponse({'error': str(e)})
+
+        return JsonResponse({'error': 'Invalid request'})
+    
+
+
+    
+# Load the model when the server starts

@@ -247,33 +247,68 @@ if (_isNS('google.translate.Element')){return}(function(){var c=_setupNS('google
 		</div>
 		<br><br><br>
 		<div class="predict">
-			<h2 style="text-align: center;"><b>YIELD PREDICTION (KARNATAKA)</b></h2>
+			<h2 style="text-align: center;"><b>FERTILIZER RECOMMENDATION </b></h2>
 	    	<div class="data">
 
 		        <form id='formm' method="post" class="main-form">
                 <div class="container">
                 {% csrf_token %}
 					<div class="contact-text">
-			        	<h3><b>Prediction Data:</b></h3>
+			        	<h3><b>Recommendation Data:</b></h3>
 
 		                <div class="contact-text">
 
-							<input type="text" name="state" id="fstate" value="State Name" 
-								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'State Name';}" required/>
-						
+							<input type="number" name="nitrogen" id="fnitrogen" placeholder="Nitrogen" required/>
 
-							<input type="text" name="district" id="fdistrict" value="District Name" 
-								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'District Name';}" required/>
-						
-							<input type="text" name="season" id="fseason" value="Season" 
-								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Season';}" required/>
-						
-							<input type="text" name="crop" id="fcrop" value="Crop Name" 
-								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Crop Name';}" required/>
-						
-							<input type="text" name="area" id="farea" value="Area (in hectares)" 
-								onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Area (in hectares)';}" required/>
+							<input type="number" name="phosphorus" id="fphosphorus" placeholder="Phosphorus" required/>
+
+							<input type="number" name="potassium" id="fpotassium" placeholder="Potassium" required/>
+
+							<input type="number" step="0.1" name="temperature" id="ftemperature" placeholder="Temperature (°C)" required/>
+
+							<input type="number" step="0.1" name="humidity" id="fhumidity" placeholder="Humidity (%)" required/>
+
+							<input type="number" step="0.1" name="soil_moisture" id="fsoil_moisture" placeholder="Soil Moisture (%)" required/><br>
+
+							<label for="soil_type">Soil Type:</label>
+							<select name="soil_type" id="fsoil_type" required>
+								<option value="" disabled selected>Select Soil Type</option>
+								<option value="Black">Black</option>
+								<option value="Red">Red</option>
+								<option value="Loamy">Loamy</option>
+								<option value="Clayey">Clayey</option>
+								<option value="Sandy">Sandy</option>
+							</select>
+
+							<label for="crop_type">Crop Type:</label>
+							<select name="crop_type" id="fcrop_type" required>
+								<option value="" disabled selected>Select Crop Type</option>
+								<option value="Barley">Barley</option>
+								<option value="Cotton">Cotton</option>
+								<option value="Ground Nuts">Ground Nuts</option>
+								<option value="Maize">Maize</option>
+								<option value="Millets">Millets</option>
+								<option value="Oil seeds">Oil seeds</option>
+								<option value="Paddy">Paddy</option>
+								<option value="Pulses">Pulses</option>
+								<option value="Sugarcane">Sugarcane</option>
+								<option value="Tobacco">Tobacco</option>
+								<option value="Wheat">Wheat</option>
+							</select>
 						</div>
+						<style>
+							input{
+								margin-right: 20px;
+								margin-bottom: 20px;
+								border-radius: 8px;
+								height: 3rem;
+								width: 20rem;
+							}
+							select{
+								margin-right: 20px;
+								height: 3rem;
+							}
+						</style>
 						
 		            </div>
 					<div class="contact-but">
@@ -323,11 +358,11 @@ if (_isNS('google.translate.Element')){return}(function(){var c=_setupNS('google
     form.addEventListener("submit", submitHandler);
     function submitHandler(e) {
         console.log("executed")
-        var list1=[document.getElementById('fstate').value,document.getElementById('fdistrict').value,document.getElementById('fseason').value,document.getElementById('fcrop').value,document.getElementById('farea').value]
+        var list1=[document.getElementById('fnitrogen').value,document.getElementById('fphosphorus').value,document.getElementById('fpotassium').value,document.getElementById('ftemperature').value,document.getElementById('fhumidity').value,document.getElementById('fsoil_moisture').value,document.getElementById('fsoil_type').value,document.getElementById('fcrop_type').value]
         e.preventDefault();
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url: '{% url "yieldcalc" %}', // the url where we want to POST
+            url: '{% url "fertrec" %}', // the url where we want to POST
             'data': {
                 'content': JSON.stringify(list1),
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
