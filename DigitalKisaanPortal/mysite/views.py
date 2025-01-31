@@ -97,6 +97,10 @@ def yprediction(request):
 def frecommend(request):
     return render(request,'mysite/frecommend.html')
 
+def crecommend(request):
+    return render(request,'mysite/crecommend.html')
+
+
 def schemes(request):
     return render(request,'mysite/schemes.html')
 
@@ -299,5 +303,55 @@ def fertrec(request):
     
 
 
+def crop_model():
+    import numpy as np
+    import pandas as pd
+    from django.shortcuts import render
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import accuracy_score
+
+    # Load dataset
+    dataset = pd.read_csv("https://raw.githubusercontent.com/Sanjana9211/Datasets/refs/heads/main/Crop_recommendation.csv")
+
+    # Split features and labels
+    X = dataset.iloc[:, :-1].values
+    y = dataset.iloc[:, -1].values
+
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+    # Train Random Forest model
+    classifier = RandomForestClassifier(n_estimators=10, criterion="entropy", random_state=0)
+    classifier.fit(X_train, y_train)
+    return classifier
+
     
-# Load the model when the server starts
+def croprec(request):
+    if request.method == "POST":
+        try:
+            # Retrieve user inputs from POST request
+            classifier=crop_model()
+            dataa = json.loads(request.POST['content'] )
+            print(dataa)
+            nitrogen = dataa[0]
+            phosphorus = dataa[1]
+            potassium = dataa[2]
+            temperature = dataa[3]
+            humidity = dataa[4]
+            ph=dataa[5]
+            rainfall=dataa[6]
+
+            # Convert inputs to NumPy array
+            user_input = np.array([[nitrogen, phosphorus, potassium, temperature, humidity, ph, rainfall]])
+
+            # Make prediction
+            prediction = classifier.predict(user_input)[0]
+
+            return JsonResponse({'message': 'success', 'username': "username", 'content': prediction})
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
+    return JsonResponse({'error': 'Invalid request'})
+    

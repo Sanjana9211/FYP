@@ -7,6 +7,8 @@ urlpatterns = [
     path('prediction', views.prediction,name='prediction'),
     path('yprediction', views.yprediction,name='yprediction'),
     path('frecommend', views.frecommend,name='frecommend'),
+    path('crecommend', views.crecommend,name='crecommend'),
+
 
     path('schemes', views.schemes,name='schemes'),
     #path('latestnews', views.latestnews,name='latestnews'),
@@ -18,6 +20,8 @@ urlpatterns = [
     path('calculate', views.index1, name="calculate"),
     path('yieldcalc', views.yieldcalc, name="yieldcalc"),
     path('fertrec', views.fertrec, name="fertrec"),
+    path('croprec', views.croprec, name="croprec"),
+
 
 
 ]
