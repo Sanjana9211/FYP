@@ -123,8 +123,17 @@ def index1(request):
 
 
 def yield_train_model():
+<<<<<<< HEAD
 
     df = pd.read_csv("https://raw.githubusercontent.com/Sanjana9211/Datasets/refs/heads/main/crop_production_karnataka.csv")
+=======
+    # Load the dataset
+    import os
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Project root
+    DATASET_PATH = os.path.join(BASE_DIR, 'mysite', 'static', 'Dataset', 'crop_production_karnataka.csv')
+
+    df = pd.read_csv(DATASET_PATH)
+>>>>>>> e3d83d950c0bb1b633ec9ffc47917dce632e76d3
 
     
     # Drop the Crop_Year column
@@ -156,6 +165,7 @@ def yield_train_model():
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train_final, y_train)
     
+<<<<<<< HEAD
     return model,ohe
 
     
@@ -163,6 +173,18 @@ def ypredict(state,district,season,crop,area):
     
     model,ohe=yield_train_model()
     
+=======
+    # Save the model and encoder
+    joblib.dump(model, "crop_production_model.pkl")
+    joblib.dump(ohe, "one_hot_encoder.pkl")
+
+
+    
+def ypredict(state,district,season,crop,area):
+    yield_train_model()
+    model = joblib.load("crop_production_model.pkl")
+    ohe = joblib.load("one_hot_encoder.pkl")
+>>>>>>> e3d83d950c0bb1b633ec9ffc47917dce632e76d3
     
     # Prepare input for prediction
     user_input = pd.DataFrame({
