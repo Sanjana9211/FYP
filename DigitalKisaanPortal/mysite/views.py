@@ -203,9 +203,9 @@ def yieldcalc(request):
 
             crop1=ypredict(dataa[0],dataa[1],dataa[2], dataa[3],dataa[4])
             print(crop1)
-        except:
-            crop1="Invalid Input"
-            print("Invalid Input")
+        except Exception as e:
+            crop1 = "Invalid Input"
+            print("Error:", str(e))  
         return JsonResponse({'message': 'success', 'username': "username", 'content': crop1})
 
 
